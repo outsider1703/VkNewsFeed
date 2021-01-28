@@ -9,22 +9,15 @@ import Foundation
 import UIKit
 
 protocol FeedCellLayourCalculatorProtocol {
-    func sizes(postText: String?, photoAttachement: FeedCellPhotoAttachementViewModelProtocol?) -> FeedCellSizesProtocol
+    func sizes(postText: String?, photoAttachement: FeedCellPhotoAttachementViewModelProtocol?, isFullSizePost: Bool) -> FeedCellSizesProtocol
 }
 
 struct Sizes: FeedCellSizesProtocol {
     var postLabelFrame: CGRect
+    var moreTextButtomFrame: CGRect
     var attachementFrame: CGRect
     var bottonViewFrame: CGRect
     var totalHeight: CGFloat
-}
-
-struct Constants {
-    static let cardInSets = UIEdgeInsets(top: 0, left: 8, bottom: 12, right: 8)
-    static let topViewHeight: CGFloat = 40
-    static let postLabelInsets = UIEdgeInsets(top: 8 + Constants.topViewHeight + 4, left: 8, bottom: 8, right: 8)
-    static let postLabelFont = UIFont.systemFont(ofSize: 15)
-    static let bottomViewHeight: CGFloat = 40
 }
 
 final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
@@ -35,7 +28,9 @@ final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
         self.screenWidth = screenWidth
     }
     
-    func sizes(postText: String?, photoAttachement: FeedCellPhotoAttachementViewModelProtocol?) -> FeedCellSizesProtocol {
+    func sizes(postText: String?, photoAttachement: FeedCellPhotoAttachementViewModelProtocol?, isFullSizePost: Bool) -> FeedCellSizesProtocol {
+        
+        var showMoreTextButtom = false
         
         let cardViewWidth = screenWidth - Constants.cardInSets.left - Constants.cardInSets.right
         
@@ -46,14 +41,33 @@ final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
         
         if let text = postText, !text.isEmpty {
             let widht = cardViewWidth - Constants.postLabelInsets.left - Constants.postLabelInsets.right
-            let height = text.height(width: widht, font: Constants.postLabelFont)
+            var height = text.height(width: widht, font: Constants.postLabelFont)
+            
+            let limitHeight = Constants.postLabelFont.lineHeight * Constants.minifiedPostLimitLines
+            
+            if !isFullSizePost && height > limitHeight {
+                height = Constants.postLabelFont.lineHeight * Constants.minifiedPostLines
+                showMoreTextButtom = true
+            }
             
             postLabelFrame.size = CGSize(width: widht, height: height)
         }
         
+        //MARK: Работа с moreTextButtomFrame
+
+        var moreTextButtomSize = CGSize.zero
+        
+        if showMoreTextButtom {
+            moreTextButtomSize = Constants.moreTextButtomSize
+        }
+        
+        let moreTextButtomOrigin = CGPoint(x: Constants.moreTextButtomInsets.left, y: postLabelFrame.maxY)
+        
+        let moreTextButtomFrame = CGRect(origin: moreTextButtomOrigin, size: moreTextButtomSize)
+        
         //MARK: Работа с attachementFrame
         
-        let attachmentTop = postLabelFrame.size == CGSize.zero ? Constants.postLabelInsets.top : postLabelFrame.maxY + Constants.postLabelInsets.bottom
+        let attachmentTop = postLabelFrame.size == CGSize.zero ? Constants.postLabelInsets.top : moreTextButtomFrame.maxY + Constants.postLabelInsets.bottom
         
         var attachmentFrame = CGRect(origin: CGPoint(x: 0, y: attachmentTop),
                                       size: CGSize.zero)
@@ -73,11 +87,12 @@ final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
         let bottomViewFrame = CGRect(origin: CGPoint(x: 0, y: bottomViewTop),
                                      size: CGSize(width: cardViewWidth, height: Constants.bottomViewHeight))
         
-        //MARK: Работа с bottonViewFrame
+        //MARK: Работа с totalHeight
 
         let totalHeight = bottomViewFrame.maxY + Constants.cardInSets.bottom
         
         return  Sizes(postLabelFrame: postLabelFrame,
+                      moreTextButtomFrame: moreTextButtomFrame,
                       attachementFrame: attachmentFrame,
                       bottonViewFrame: bottomViewFrame,
                       totalHeight: totalHeight)

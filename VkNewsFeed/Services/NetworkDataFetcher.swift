@@ -26,6 +26,7 @@ struct NetworkDataFetcher: DataFetchar {
                 response(nil)
             }
             let decoded = self.decodeJSON(type: FeedResponseWrapped.self, from: data)
+//            print(decoded?.response)
             response(decoded?.response)
         }
     }
