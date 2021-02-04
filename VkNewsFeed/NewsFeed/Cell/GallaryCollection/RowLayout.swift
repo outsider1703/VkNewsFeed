@@ -16,7 +16,7 @@ class RowLayout: UICollectionViewLayout {
     
     weak var delegate: RowLayoutDelegate!
     
-    static var numberOfRows = 2
+    static var numberOfRows = 1
     fileprivate var cellPading: CGFloat = 8
     
     fileprivate var cache = [UICollectionViewLayoutAttributes]()

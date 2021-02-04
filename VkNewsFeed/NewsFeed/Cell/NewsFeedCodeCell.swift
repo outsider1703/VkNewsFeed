@@ -233,7 +233,6 @@ final class NewsfeedCodeCell: UITableViewCell {
             gallaryCollectionView.isHidden = true
             postImageView.frame = viewModel.sizes.attachementFrame
         } else if viewModel.photoAttachments.count > 1 {
-            print("lol")
             gallaryCollectionView.frame = viewModel.sizes.attachementFrame
             postImageView.isHidden = true
             gallaryCollectionView.isHidden = false
