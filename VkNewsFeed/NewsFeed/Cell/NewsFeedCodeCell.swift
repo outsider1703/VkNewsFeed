@@ -29,6 +29,8 @@ final class NewsfeedCodeCell: UITableViewCell {
     
     // Второй слой
     
+    let gallaryCollectionView = GallaryCollectionView()
+    
     let topView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -222,18 +224,26 @@ final class NewsfeedCodeCell: UITableViewCell {
         viewsLabel.text = viewModel.views
         
         postlabel.frame = viewModel.sizes.postLabelFrame
-        postImageView.frame = viewModel.sizes.attachementFrame
         bottomView.frame = viewModel.sizes.bottonViewFrame
         moreTextButton.frame = viewModel.sizes.moreTextButtomFrame
 
-        if let photoAttachment = viewModel.photoAttachement {
+        if let photoAttachment = viewModel.photoAttachments.first, viewModel.photoAttachments.count == 1 {
             postImageView.set(imageURL: photoAttachment.photoUrlString)
             postImageView.isHidden = false
+            gallaryCollectionView.isHidden = true
+            postImageView.frame = viewModel.sizes.attachementFrame
+        } else if viewModel.photoAttachments.count > 1 {
+            print("lol")
+            gallaryCollectionView.frame = viewModel.sizes.attachementFrame
+            postImageView.isHidden = true
+            gallaryCollectionView.isHidden = false
+            gallaryCollectionView.set(photo: viewModel.photoAttachments)
         } else {
             postImageView.isHidden = true
+            gallaryCollectionView.isHidden = true
         }
-
     }
+    
     private func overlayFourthLayerOnBottomViewViews() {
         likesView.addSubview(likesImage)
         likesView.addSubview(likesLabel)
@@ -331,6 +341,7 @@ final class NewsfeedCodeCell: UITableViewCell {
         cardView.addSubview(postlabel)
         cardView.addSubview(moreTextButton)
         cardView.addSubview(postImageView)
+        cardView.addSubview(gallaryCollectionView)
         cardView.addSubview(bottomView)
         
         // topView constraints

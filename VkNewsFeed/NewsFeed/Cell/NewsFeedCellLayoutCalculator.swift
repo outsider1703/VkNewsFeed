@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol FeedCellLayourCalculatorProtocol {
-    func sizes(postText: String?, photoAttachement: FeedCellPhotoAttachementViewModelProtocol?, isFullSizePost: Bool) -> FeedCellSizesProtocol
+    func sizes(postText: String?, photoAttachments: [FeedCellPhotoAttachementViewModelProtocol], isFullSizePost: Bool) -> FeedCellSizesProtocol
 }
 
 struct Sizes: FeedCellSizesProtocol {
@@ -28,7 +28,7 @@ final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
         self.screenWidth = screenWidth
     }
     
-    func sizes(postText: String?, photoAttachement: FeedCellPhotoAttachementViewModelProtocol?, isFullSizePost: Bool) -> FeedCellSizesProtocol {
+    func sizes(postText: String?, photoAttachments: [FeedCellPhotoAttachementViewModelProtocol], isFullSizePost: Bool) -> FeedCellSizesProtocol {
         
         var showMoreTextButtom = false
         
@@ -54,7 +54,7 @@ final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
         }
         
         //MARK: Работа с moreTextButtomFrame
-
+        
         var moreTextButtomSize = CGSize.zero
         
         if showMoreTextButtom {
@@ -70,32 +70,44 @@ final class NewsFeedCellLayoutCalculator: FeedCellLayourCalculatorProtocol {
         let attachmentTop = postLabelFrame.size == CGSize.zero ? Constants.postLabelInsets.top : moreTextButtomFrame.maxY + Constants.postLabelInsets.bottom
         
         var attachmentFrame = CGRect(origin: CGPoint(x: 0, y: attachmentTop),
-                                      size: CGSize.zero)
+                                     size: CGSize.zero)
         
-        if let attachment = photoAttachement {
+        if let attachment = photoAttachments.first {
             let photoHeight: Float = Float(attachment.height)
             let photoWidth: Float = Float(attachment.width)
             let ratio = CGFloat(photoHeight / photoWidth)
-            
-            attachmentFrame.size = CGSize(width: cardViewWidth, height: cardViewWidth * ratio)
+            if photoAttachments.count == 1 {
+                attachmentFrame.size = CGSize(width: cardViewWidth, height: cardViewWidth * ratio)
+            } else if photoAttachments.count > 1 {
+                
+                var photos = [CGSize]()
+                for photo in photoAttachments {
+                    let photoSize = CGSize(width: CGFloat(photo.width), height: CGFloat(photo.height))
+                    photos.append(photoSize)
+                }
+                
+                let rowHeight = RowLayout.rowHeightCounter(superviewWidth: cardViewWidth, photoArray: photos)
+                attachmentFrame.size = CGSize(width: cardViewWidth, height: rowHeight!)
+            }
         }
-        
-        //MARK: Работа с bottonViewFrame
-
-        let bottomViewTop = max(postLabelFrame.maxY, attachmentFrame.maxY)
-        
-        let bottomViewFrame = CGRect(origin: CGPoint(x: 0, y: bottomViewTop),
-                                     size: CGSize(width: cardViewWidth, height: Constants.bottomViewHeight))
-        
-        //MARK: Работа с totalHeight
-
-        let totalHeight = bottomViewFrame.maxY + Constants.cardInSets.bottom
-        
-        return  Sizes(postLabelFrame: postLabelFrame,
-                      moreTextButtomFrame: moreTextButtomFrame,
-                      attachementFrame: attachmentFrame,
-                      bottonViewFrame: bottomViewFrame,
-                      totalHeight: totalHeight)
-    }
     
+    
+    //MARK: Работа с bottonViewFrame
+    
+    let bottomViewTop = max(postLabelFrame.maxY, attachmentFrame.maxY)
+    
+    let bottomViewFrame = CGRect(origin: CGPoint(x: 0, y: bottomViewTop),
+                                 size: CGSize(width: cardViewWidth, height: Constants.bottomViewHeight))
+    
+    //MARK: Работа с totalHeight
+    
+    let totalHeight = bottomViewFrame.maxY + Constants.cardInSets.bottom
+    
+    return  Sizes(postLabelFrame: postLabelFrame,
+    moreTextButtomFrame: moreTextButtomFrame,
+    attachementFrame: attachmentFrame,
+    bottonViewFrame: bottomViewFrame,
+    totalHeight: totalHeight)
+}
+
 }
