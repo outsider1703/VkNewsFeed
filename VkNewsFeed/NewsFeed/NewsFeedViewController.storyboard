@@ -28,10 +28,10 @@
                         <viewLayoutGuide key="safeArea" id="0ff-ok-xLU"/>
                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                         <constraints>
-                            <constraint firstItem="Sdd-xu-PIZ" firstAttribute="leading" secondItem="0ff-ok-xLU" secondAttribute="leading" id="Ccr-Lr-EEc"/>
-                            <constraint firstItem="0ff-ok-xLU" firstAttribute="trailing" secondItem="Sdd-xu-PIZ" secondAttribute="trailing" id="SxY-RX-BnQ"/>
-                            <constraint firstItem="Sdd-xu-PIZ" firstAttribute="top" secondItem="0ff-ok-xLU" secondAttribute="top" id="a40-ea-apE"/>
-                            <constraint firstItem="0ff-ok-xLU" firstAttribute="bottom" secondItem="Sdd-xu-PIZ" secondAttribute="bottom" id="hUA-cT-BRb"/>
+                            <constraint firstItem="0ff-ok-xLU" firstAttribute="trailing" secondItem="Sdd-xu-PIZ" secondAttribute="trailing" id="3Dv-aA-glA"/>
+                            <constraint firstItem="Sdd-xu-PIZ" firstAttribute="top" secondItem="d8a-wR-sXt" secondAttribute="top" id="ndx-13-eah"/>
+                            <constraint firstItem="0ff-ok-xLU" firstAttribute="bottom" secondItem="Sdd-xu-PIZ" secondAttribute="bottom" id="ryY-Zb-beZ"/>
+                            <constraint firstItem="Sdd-xu-PIZ" firstAttribute="leading" secondItem="0ff-ok-xLU" secondAttribute="leading" id="uxD-fV-8hh"/>
                         </constraints>
                     </view>
                     <connections>

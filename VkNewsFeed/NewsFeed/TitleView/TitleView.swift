@@ -54,7 +54,7 @@ class TitleView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return UIView.layoutFittingExpandedSize
+        UIView.layoutFittingExpandedSize
     }
     
     override func layoutSubviews() {

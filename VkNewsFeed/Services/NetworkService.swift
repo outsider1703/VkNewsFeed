@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Networking {
-    func request(path: String, params: [String: String], completion: @escaping (Data?, Error?) -> Void )
+    func request(path: String, params: [String: String], completion: @escaping (Data?, Error?) -> Void)
 }
 
 final class NetworkService: Networking {

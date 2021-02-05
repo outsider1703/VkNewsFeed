@@ -14,34 +14,27 @@ protocol NewsFeedDisplayLogic: class {
 
 class NewsFeedViewController: UIViewController, NewsFeedDisplayLogic, NewsFeedCodeCellDelegate {
     
+    @IBOutlet var table: UITableView!
+    
     var interactor: NewsFeedBusinessLogic?
     var router: (NSObjectProtocol & NewsFeedRoutingLogic)?
     
     private var feedViewModel = FeedViewModel.init(cells: [])
     private var titleView = TitleView()
-    @IBOutlet var table: UITableView!
-    
-    // MARK: View lifecycle
+    private var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        return refreshControl
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setUpTable()
         setupTopBars()
-        
-//      table.register(UINib(nibName: "NewsFeedCell", bundle: nil), forCellReuseIdentifier: NewsFeedCell.reuseId)
-        table.register(NewsfeedCodeCell.self, forCellReuseIdentifier: NewsfeedCodeCell.reuseId)
-        table.separatorStyle = .none
-        table.backgroundColor = .clear
-        view.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
         
         interactor?.makeRequest(request: NewsFeed.Model.Request.RequestType.getNewsFeed)
         interactor?.makeRequest(request: NewsFeed.Model.Request.RequestType.getUser)
-    }
-    
-    private func setupTopBars() {
-        self.navigationController?.hidesBarsOnSwipe = true
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationItem.titleView = titleView
     }
     
     func displayData(viewModel: NewsFeed.Model.ViewModel.ViewModelData) {
@@ -49,13 +42,30 @@ class NewsFeedViewController: UIViewController, NewsFeedDisplayLogic, NewsFeedCo
         case .displayNewsFeed(let feedViewModel):
             self.feedViewModel = feedViewModel
             table.reloadData()
+            refreshControl.endRefreshing()
         case .displayUser(userViewModel: let userViewModel):
             titleView.set(userViewModel: userViewModel)
         }
     }
     
-    // MARK: Setup
+    func revealPost(for cell: NewsfeedCodeCell) {
+        guard let indexPath = table.indexPath(for: cell) else { return }
+        let cellViewModel = feedViewModel.cells[indexPath.row]
+        
+        interactor?.makeRequest(request: .revealPostIds(postId: cellViewModel.postId))
+    }
     
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+
+    }
+    
+    @objc private func refresh() {
+        interactor?.makeRequest(request: NewsFeed.Model.Request.RequestType.getNewsFeed)
+    }
+}
+
+// MARK: Private function
+extension NewsFeedViewController {
     private func setup() {
         let viewController        = self
         let interactor            = NewsFeedInteractor()
@@ -68,29 +78,49 @@ class NewsFeedViewController: UIViewController, NewsFeedDisplayLogic, NewsFeedCo
         router.viewController     = viewController
     }
     
-    func revealPost(for cell: NewsfeedCodeCell) {
-        guard let indexPath = table.indexPath(for: cell) else { return }
-        let cellViewModel = feedViewModel.cells[indexPath.row]
+    private func setUpTable() {
+        let topInset: CGFloat = 8
+        table.contentInset.top = topInset
+
+        //table.register(UINib(nibName: "NewsFeedCell", bundle: nil), forCellReuseIdentifier: NewsFeedCell.reuseId)
+        table.register(NewsfeedCodeCell.self, forCellReuseIdentifier: NewsfeedCodeCell.reuseId)
+        table.separatorStyle = .none
+        table.backgroundColor = .clear
+        view.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
         
-        interactor?.makeRequest(request: .revealPostIds(postId: cellViewModel.postId))
+        table.addSubview(refreshControl)
     }
     
+    private func setupTopBars() {
+//        let topBar = UIView(frame: UIApplication.shared.statusBarFrame)
+//        topBar.backgroundColor = .white
+//        topBar.layer.shadowColor = UIColor.black.cgColor
+//        topBar.layer.shadowOpacity = 0.3
+//        topBar.layer.shadowOffset = CGSize.zero
+//        topBar.layer.shadowRadius = 8
+//        self.view.addSubview(topBar)
+        
+        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationItem.titleView = titleView
+    }
 }
 
+//MARK: - UITableViewDelegate & UITableViewDataSource
 extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         feedViewModel.cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//      let cell = tableView.dequeueReusableCell(withIdentifier: NewsFeedCell.reuseId, for: indexPath) as! NewsFeedCell
+        //let cell = tableView.dequeueReusableCell(withIdentifier: NewsFeedCell.reuseId, for: indexPath) as! NewsFeedCell
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsfeedCodeCell.reuseId, for: indexPath) as! NewsfeedCodeCell
         let cellViewModel = feedViewModel.cells[indexPath.row]
         cell.delegate = self
         cell.set(viewModel: cellViewModel)
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellViewModel = feedViewModel.cells[indexPath.row]
         return cellViewModel.sizes.totalHeight

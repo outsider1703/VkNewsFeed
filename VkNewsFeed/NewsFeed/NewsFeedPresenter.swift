@@ -44,7 +44,6 @@ class NewsFeedPresenter: NewsFeedPresentationLogic {
     private func cellViewModel(from feedItem: FeedItem, profiles: [Profile], groups: [Group], revealedPostIds: [Int]) -> FeedViewModel.Cell {
         let profile = self.profile(for: feedItem.sourceId, profiles: profiles, groups: groups)
         
-//        let photoAttachement = self.photoAttachement(feedItem: feedItem)
         let photoAttachments = self.photoAttachments(feedItem: feedItem)
         
         let date = Date(timeIntervalSince1970: feedItem.date)
@@ -59,12 +58,23 @@ class NewsFeedPresenter: NewsFeedPresentationLogic {
                                        name: profile.name,
                                        date: dateTitle,
                                        post: feedItem.text,
-                                       like: String(feedItem.likes?.count ?? 0),
-                                       comment: String(feedItem.comments?.count ?? 0),
-                                       share: String(feedItem.reposts?.count ?? 0),
-                                       views: String(feedItem.views?.count ?? 0),
+                                       like: formatterCounter(feedItem.likes?.count),
+                                       comment: formatterCounter(feedItem.comments?.count),
+                                       share: formatterCounter(feedItem.reposts?.count),
+                                       views: formatterCounter(feedItem.views?.count),
                                        photoAttachments: photoAttachments,
                                        sizes: sizes)
+    }
+    
+    private func formatterCounter(_ counter: Int?) -> String? {
+        guard let counter = counter, counter > 0 else { return nil }
+        var stringCounter = String(counter)
+        if 4...6 ~= stringCounter.count {
+            stringCounter = String(stringCounter.dropLast(3)) + "K"
+        } else if stringCounter.count > 6 {
+            stringCounter = String(stringCounter.dropLast(6)) + "M"
+        }
+        return stringCounter
     }
     
     private func profile(for sourseId: Int, profiles: [Profile], groups: [Group]) -> ProfileRepresentable {
@@ -77,14 +87,6 @@ class NewsFeedPresenter: NewsFeedPresentationLogic {
         return profileRepresentable!
     }
     
-//    private func photoAttachement(feedItem: FeedItem) -> FeedViewModel.FeedCellPhotoAttachement? {
-//        guard let photos = feedItem.attachments?.compactMap({ attachment in
-//            attachment.photo
-//        }), let firstPhoto = photos.first else { return nil }
-//        return FeedViewModel.FeedCellPhotoAttachement(photoUrlString: firstPhoto.srcBIG,
-//                                                      width: firstPhoto.width,
-//                                                      height: firstPhoto.height)
-//    }
     private func photoAttachments(feedItem: FeedItem) -> [FeedViewModel.FeedCellPhotoAttachement] {
         guard let attachments = feedItem.attachments else { return [] }
         

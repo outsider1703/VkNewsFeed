@@ -37,12 +37,19 @@ final class NewsfeedCodeCell: UITableViewCell {
         return view
     }()
     
-    let postlabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = Constants.postLabelFont
-        label.textColor = #colorLiteral(red: 0.227329582, green: 0.2323184013, blue: 0.2370472848, alpha: 1)
-        return label
+    let postlabel: UITextView = {
+        let textView = UITextView()
+        textView.font = Constants.postLabelFont
+        textView.isScrollEnabled = false
+        textView.isSelectable = true
+        textView.isUserInteractionEnabled = true
+        textView.isEditable = false
+        
+        let padding = textView.textContainer.lineFragmentPadding
+        textView.textContainerInset = UIEdgeInsets.init(top: 0, left: -padding, bottom: 0, right: -padding)
+        
+        textView.dataDetectorTypes = UIDataDetectorTypes.all
+        return textView
     }()
     
     let postImageView: WebImageView = {
@@ -188,14 +195,14 @@ final class NewsfeedCodeCell: UITableViewCell {
         
         iconImageView.layer.cornerRadius = Constants.topViewHeight / 2
         iconImageView.clipsToBounds = true
-
+        
         backgroundColor = .clear
         selectionStyle = .none
         
         cardView.layer.cornerRadius = 10
         cardView.clipsToBounds = true
         moreTextButton.addTarget(self, action: #selector(moreTextButtonTouch), for: .touchUpInside)
-
+        
         overlayFirstLayer() // первый слой
         overlaySecondLayer() // второй слой
         overlayThirdLayerOnTopView() // третий слой на topView
@@ -206,7 +213,7 @@ final class NewsfeedCodeCell: UITableViewCell {
     @objc func moreTextButtonTouch(sender: UIButton) {
         delegate?.revealPost(for: self)
     }
-
+    
     override func prepareForReuse() {
         iconImageView.set(imageURL: nil)
         postImageView.set(imageURL: nil)
@@ -226,7 +233,7 @@ final class NewsfeedCodeCell: UITableViewCell {
         postlabel.frame = viewModel.sizes.postLabelFrame
         bottomView.frame = viewModel.sizes.bottonViewFrame
         moreTextButton.frame = viewModel.sizes.moreTextButtomFrame
-
+        
         if let photoAttachment = viewModel.photoAttachments.first, viewModel.photoAttachments.count == 1 {
             postImageView.set(imageURL: photoAttachment.photoUrlString)
             postImageView.isHidden = false
@@ -334,7 +341,7 @@ final class NewsfeedCodeCell: UITableViewCell {
         dateLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -2).isActive = true
         dateLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
-        
+    
     private func overlaySecondLayer() {
         cardView.addSubview(topView)
         cardView.addSubview(postlabel)

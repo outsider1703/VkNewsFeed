@@ -15,34 +15,25 @@ protocol NewsFeedBusinessLogic {
 class NewsFeedInteractor: NewsFeedBusinessLogic {
     
     var presenter: NewsFeedPresentationLogic?
-    var service: NewsFeedService?
-    
-    private var revealedPostIds = [Int]()
-    private var feedResponse: FeedResponse?
-    
-    private let fetcher: DataFetchar = NetworkDataFetcher(networking: NetworkService())
-    
+    var service: NewsFeedWorker?
+        
     func makeRequest(request: NewsFeed.Model.Request.RequestType) {
         if service == nil {
-            service = NewsFeedService()
+            service = NewsFeedWorker()
         }
         switch request {
         case .getNewsFeed:
-            fetcher.getFeed { [weak self] feedResponse in
-                self?.feedResponse = feedResponse
-                self?.presentFeed()
-            }
-        case .revealPostIds(let postId):
-            revealedPostIds.append(postId)
-            presentFeed()
+            service?.getFeed(completion: { [weak self] (revealedPostId, feed) in
+                self?.presenter?.presentData(response: .presentNewsFeed(feed: feed, revealedPostIds: revealedPostId))
+            })
         case .getUser:
-            fetcher.getUser { userResponse in
-                self.presenter?.presentData(response: NewsFeed.Model.Response.ResponseType.presentUserInfo(user: userResponse))
-            }
+            service?.getUser(completion: { [weak self] user in
+                self?.presenter?.presentData(response: .presentUserInfo(user: user))
+            })
+        case .revealPostIds(let postId):
+            service?.revealPostIds(forPostId: postId, completion: { [weak self] (revealedPostId, feed) in
+                self?.presenter?.presentData(response: .presentNewsFeed(feed: feed, revealedPostIds: revealedPostId))
+            })
         }
-    }
-    private func presentFeed() {
-        guard let feedResponse = feedResponse else { return }
-        presenter?.presentData(response: NewsFeed.Model.Response.ResponseType.presentNewsFeed(feed: feedResponse, revealedPostIds: revealedPostIds))
     }
 }
