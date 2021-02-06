@@ -40,6 +40,9 @@
 		FAE87A9D25A8807B00ECF999 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE87A9B25A8807B00ECF999 /* LaunchScreen.storyboard */; };
 		FAE87AC825A8BCCD00ECF999 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE87AC725A8BCCD00ECF999 /* AuthService.swift */; };
 		FAE87ACC25A8C01700ECF999 /* AuthViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE87ACB25A8C01700ECF999 /* AuthViewController.storyboard */; };
+		FAEFDB0225CDAD9000710CF7 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEFDB0125CDAD9000710CF7 /* FooterView.swift */; };
+		FAEFDB0625CDB43200710CF7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = FAEFDB0525CDB43200710CF7 /* Localizable.stringsdict */; };
+		FAEFDB0925CF5BE400710CF7 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEFDB0825CF5BE400710CF7 /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +83,9 @@
 		FAE87A9E25A8807B00ECF999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAE87AC725A8BCCD00ECF999 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FAE87ACB25A8C01700ECF999 /* AuthViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthViewController.storyboard; sourceTree = "<group>"; };
+		FAEFDB0125CDAD9000710CF7 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
+		FAEFDB0525CDB43200710CF7 /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
+		FAEFDB0825CF5BE400710CF7 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +139,7 @@
 		FA69D96A25AF9B39008657FE /* NewsFeed */ = {
 			isa = PBXGroup;
 			children = (
+				FAEFDB0025CDAD7200710CF7 /* FooterView */,
 				FA0925AB25CAF4EA004D7903 /* TitleView */,
 				FADA05CD25B20A7E00D19A37 /* Cell */,
 				FA69D96F25AF9B59008657FE /* NewsFeedViewController.swift */,
@@ -174,6 +181,8 @@
 				FADA05D525B39E8F00D19A37 /* WebImageView.swift */,
 				FA04B99125B7834C004298B8 /* Extension String + Height.swift */,
 				FA790B4125BED41C007646A9 /* Extension UIView Constraints.swift */,
+				FAEFDB0525CDB43200710CF7 /* Localizable.stringsdict */,
+				FAEFDB0825CF5BE400710CF7 /* GradientView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -231,6 +240,14 @@
 				FAE87ACB25A8C01700ECF999 /* AuthViewController.storyboard */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		FAEFDB0025CDAD7200710CF7 /* FooterView */ = {
+			isa = PBXGroup;
+			children = (
+				FAEFDB0125CDAD9000710CF7 /* FooterView.swift */,
+			);
+			path = FooterView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,6 +314,7 @@
 				FADA05D225B20AEA00D19A37 /* NewsFeedCell.xib in Resources */,
 				FAE87A9A25A8807B00ECF999 /* Assets.xcassets in Resources */,
 				FA69D98125AFB2C1008657FE /* NewsFeedViewController.storyboard in Resources */,
+				FAEFDB0625CDB43200710CF7 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +368,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA0925A825CAB3D7004D7903 /* RowLayout.swift in Sources */,
+				FAEFDB0225CDAD9000710CF7 /* FooterView.swift in Sources */,
 				FAA8A18825AE386800B208E1 /* FeedResponse.swift in Sources */,
 				FADA05D625B39E8F00D19A37 /* WebImageView.swift in Sources */,
 				FA790B3F25BECC40007646A9 /* NewsFeedCodeCell.swift in Sources */,
@@ -374,6 +393,7 @@
 				FADA05CF25B20A9100D19A37 /* NewsFeedCell.swift in Sources */,
 				FA69D97625AF9B59008657FE /* NewsFeedViewController.swift in Sources */,
 				FA04B98F25B767CD004298B8 /* NewsFeedCellLayoutCalculator.swift in Sources */,
+				FAEFDB0925CF5BE400710CF7 /* GradientView.swift in Sources */,
 				FA790B4225BED41C007646A9 /* Extension UIView Constraints.swift in Sources */,
 				FA0925B125CAF61C004D7903 /* InsetableTextField.swift in Sources */,
 			);

@@ -19,7 +19,6 @@ class TitleView: UIView {
     private let profileImage: WebImageView = {
         let image = WebImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .orange
         image.clipsToBounds = true
         return image
     }()

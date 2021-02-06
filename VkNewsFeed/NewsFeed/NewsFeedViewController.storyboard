@@ -16,6 +16,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6Z-j9-cAc" customClass="GradientView" customModule="VkNewsFeed" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                        <color key="value" systemColor="systemOrangeColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                        <color key="value" systemColor="systemPinkColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sdd-xu-PIZ">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -26,9 +38,13 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="0ff-ok-xLU"/>
-                        <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0ff-ok-xLU" firstAttribute="trailing" secondItem="Sdd-xu-PIZ" secondAttribute="trailing" id="3Dv-aA-glA"/>
+                            <constraint firstItem="W6Z-j9-cAc" firstAttribute="top" secondItem="0ff-ok-xLU" secondAttribute="top" id="EQ1-oU-RfO"/>
+                            <constraint firstItem="W6Z-j9-cAc" firstAttribute="leading" secondItem="0ff-ok-xLU" secondAttribute="leading" id="J0j-TI-5h3"/>
+                            <constraint firstItem="W6Z-j9-cAc" firstAttribute="trailing" secondItem="0ff-ok-xLU" secondAttribute="trailing" id="RiA-gs-1fk"/>
+                            <constraint firstItem="W6Z-j9-cAc" firstAttribute="bottom" secondItem="0ff-ok-xLU" secondAttribute="bottom" id="ZpS-mN-BAh"/>
                             <constraint firstItem="Sdd-xu-PIZ" firstAttribute="top" secondItem="d8a-wR-sXt" secondAttribute="top" id="ndx-13-eah"/>
                             <constraint firstItem="0ff-ok-xLU" firstAttribute="bottom" secondItem="Sdd-xu-PIZ" secondAttribute="bottom" id="ryY-Zb-beZ"/>
                             <constraint firstItem="Sdd-xu-PIZ" firstAttribute="leading" secondItem="0ff-ok-xLU" secondAttribute="leading" id="uxD-fV-8hh"/>
@@ -49,6 +65,9 @@
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
