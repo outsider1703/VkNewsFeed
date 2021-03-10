@@ -140,3 +140,29 @@ extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource {
         return cellViewModel.sizes.totalHeight
     }
 }
+
+//MARK: - Test cod
+//extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        feedViewModel.cells.count
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: NewsFeedCell.reuseId, for: indexPath) as! NewsFeedCell
+////        let cell = tableView.dequeueReusableCell(withIdentifier: NewsfeedCodeCell.reuseId, for: indexPath) as! NewsfeedCodeCell
+//        let cellViewModel = feedViewModel.cells[indexPath.row]
+//        cell.delegate = self
+//        cell.set(viewModel: cellViewModel)
+//        return cell
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let cellViewModel = feedViewModel.cells[indexPath.row]
+//        return cellViewModel.sizes.totalHeight
+//    }
+//
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let cellViewModel = feedViewModel.cells[indexPath.row]
+//        return cellViewModel.sizes.totalHeight
+//    }
+//}
